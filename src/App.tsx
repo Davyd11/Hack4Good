@@ -18,14 +18,28 @@ const ARStartButton = (props: any) => (
   </button>
 );
 
+export const Default = () => {
+  const images = [
+    {
+      key: "1",
+      src: "https://raw.githubusercontent.com/immersive-web/webxr-samples/main/media/gltf/space/space.gltf",
+    },
+  ];
+  return (
+    <AugmentedRealityView
+      unsupportedComponent={ReasonDisplay}
+      startStopComponent={ARStartButton}
+      images={images}
+      showStats={false}
+    />
+  );
+};
+
 function App() {
   const { support } = useAugmentedReality();
   return support.isSupported ? (
     <div>
-      <AugmentedRealityView
-        unsupportedComponent={ReasonDisplay}
-        startStopComponent={ARStartButton}
-      />
+      <Default />
     </div>
   ) : (
     <div>Browser not supported</div>
