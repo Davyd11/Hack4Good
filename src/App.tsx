@@ -12,11 +12,20 @@ const ReasonDisplay = (props: any) => {
   }
 };
 
+const ARStartButton = (props: any) => (
+  <button type="button" onClick={props.onStartSelected}>
+    Start AR session
+  </button>
+);
+
 function App() {
   const { support } = useAugmentedReality();
   return support.isSupported ? (
     <div>
-      <AugmentedRealityView unsupportedComponent={ReasonDisplay} />
+      <AugmentedRealityView
+        unsupportedComponent={ReasonDisplay}
+        startStopComponent={ARStartButton}
+      />
     </div>
   ) : (
     <div>Browser not supported</div>
