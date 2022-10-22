@@ -1,12 +1,4 @@
-/**
- * @license
- * Copyright 2019 Google LLC. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-
-// This example creates a 2-pixel-wide red polyline showing the path of
-// the first trans-Pacific flight between Oakland, CA, and Brisbane,
-// Australia which was made by Charles Kingsford Smith.
+import {watchLocation} from './utils.js'
 
 class Trip {
   constructor(public readonly start: google.maps.LatLng, public readonly end: google.maps.LatLng) {}
@@ -370,70 +362,54 @@ function initMap() {
       ]
     }
   );
-  
+
   let service: google.maps.places.PlacesService;
   service = new google.maps.places.PlacesService(map);
   let infowindow: google.maps.InfoWindow;
-
-  const request = {
-    query: "Museum of Contemporary Art Australia",
-    fields: ["name", "geometry"],
-    types: ["museum"],
-  };
-
-
- 
-  function watchLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(showPosition, handleError);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }
-  function showPosition(position: GeolocationPosition) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    const latlng = new google.maps.LatLng(lat, lng);
-    const marker = new google.maps.Marker({
-      position: latlng,
-      map: map,
-      title: "You are here!",
-    });
-    map.setCenter(latlng);
-  }
-  function handleError(error: GeolocationPositionError) {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        console.error("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.error("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        console.error("The request to get user location timed out.");
-        break;
-      default:
-        console.error("An unknown error occurred.");
-    }
-  }
-
-  
+  let markers: google.maps.Marker[]= [];
+  let ubication: google.maps.Marker;
 
   map.addListener("click", (e) => {
+    deleteMarkers();
     placeMarkerAndPanTo(e.latLng, map);
   });
 
-  function placeMarkerAndPanTo(latLng: google.maps.LatLng, map: google.maps.Map) {
+  function addMarker(position: google.maps.LatLng | google.maps.LatLngLiteral) {
     const marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
+      position,
+      map,
     });
+    markers.push(marker);
+  }
+
+  function setMapOnAll(map: google.maps.Map | null) {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  function hideMarkers(): void {
+    setMapOnAll(null);
+  }
+
+  // Shows any markers currently in the array.
+  function showMarkers(): void {
+    setMapOnAll(map);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers(): void {
+    hideMarkers();
+    markers = [];
+  }
+
+
+  function placeMarkerAndPanTo(latLng: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
+    addMarker(latLng);
     map.panTo(latLng);
     return marker;
   }
-
- 
-
 
   const coords = [
     { lat: 40.4136, lng: -3.6913 },
@@ -453,6 +429,7 @@ function initMap() {
     map: map,
     title: "Hello World!",
   });
+  markers.push(marker);
 
   function clear_directions(map: google.maps.Map){
     if (directionsDisplay != null) {
@@ -460,15 +437,53 @@ function initMap() {
       directionsDisplay = null;
     }
   }
-  
+
   const startbutton = document.getElementById("start-btn");
+
+  function watchLocation(map, input) {
+    map = input
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition, handleError);
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const latlng = new google.maps.LatLng(lat, lng);
+      if (ubication != undefined) {ubication.setMap(map)};
+      const marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: "./img.png",
+        title: "You are here!",
+      });
+      ubication = marker;
+      map.setCenter(latlng);
+    }
+    function handleError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          console.error("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          console.error("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          console.error("The request to get user location timed out.");
+          break;
+        default:
+          console.error("An unknown error occurred.");
+      }
+    }
 
   startbutton?.addEventListener("click", () => {
     // first clear all directions
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     // unbind the directions from the map
-    
+
 
     directionsRenderer.setMap(null);
     directionsRenderer.setPanel(null);
@@ -486,21 +501,14 @@ function initMap() {
       }
     });
   });
-  
-  
-
-
   return map;
 }
-
-
 
 declare global {
   interface Window {
     initMap: () => void;
   }
 }
-
 
 window.initMap = initMap;
 
