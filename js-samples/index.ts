@@ -6,15 +6,22 @@ class Trip {
 
 
 function initMap() {
+  const routes = [
+    { start: new google.maps.LatLng(40.425292887624686, -3.688789558920166), end: new google.maps.LatLng(40.424867943894164, -3.689156855568019) },
+    { start: new google.maps.LatLng(40.424867943894164, -3.689156855568019), end: new google.maps.LatLng(40.42450954669476, -3.6886718153422646) },
+    { start: new google.maps.LatLng(40.42450954669476, -3.6886718153422646), end: new google.maps.LatLng(40.42424894171441, -3.6913875700730223) },
+
+  ]
   const map = new google.maps.Map(
     document.getElementById("map") as HTMLElement,
     {
-      zoom: 18,
-      center: { lat: 40.4136, lng: -3.6913 },
+      zoom: 16,
+      center: routes[0].start,
       mapTypeId: "terrain",
       disableDefaultUI: true,
       styles: [
         {
+
           "elementType": "geometry",
           "stylers": [
             {
@@ -362,12 +369,12 @@ function initMap() {
       ]
     }
     );
-
+    
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
-  let service: google.maps.places.PlacesService;
-  service = new google.maps.places.PlacesService(map);
-  let infowindow: google.maps.InfoWindow;
+    let service: google.maps.places.PlacesService;
+    service = new google.maps.places.PlacesService(map);
+    let infowindow: google.maps.InfoWindow;
   let markers: google.maps.Marker[]= [];
   let ubication: google.maps.Marker;
 
@@ -415,25 +422,25 @@ function initMap() {
     return marker;
   }
 
-  const coords = [
-    { lat: 40.4136, lng: -3.6913 },
-  ];
-  const flightPath = new google.maps.Polyline({
-    path: coords,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 2,
-  });
+  // const coords = [
+  //   { lat: 40.4136, lng: -3.6913 },
+  // ];
+  // const flightPath = new google.maps.Polyline({
+  //   path: coords,
+  //   geodesic: true,
+  //   strokeColor: "#FF0000",
+  //   strokeOpacity: 1.0,
+  //   strokeWeight: 2,
+  // });
 
-  flightPath.setMap(map);
+  // flightPath.setMap(map);
   watchLocation();
-  const marker = new google.maps.Marker({
-    position: { lat:40.4136, lng: -3.6929 },
-    map: map,
-    title: "Hello World!",
-  });
-  markers.push(marker);
+  // const marker = new google.maps.Marker({
+  //   position: { lat:40.4136, lng: -3.6929 },
+  //   map: map,
+  //   title: "Hello World!",
+  // });
+  // markers.push(marker);
 
   function clear_directions(map: google.maps.Map){
     if (directionsDisplay != null) {
@@ -454,17 +461,7 @@ function initMap() {
 
   const startbutton = document.getElementById("start-btn");
 
-  startbutton?.addEventListener("click", () => {
-    // first clear all directions
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-    // unbind the directions from the map
-    
-
-    directionsRenderer.setMap(null);
-    directionsRenderer.setPanel(null);
-    const start = new google.maps.LatLng(40.4136, -3.6913);
-    const end = new google.maps.LatLng(40.4136, -3.6929);
+  function newRoute(start: google.maps.LatLng, end: google.maps.LatLng) {
     const request = {
       origin: start,
       destination: end,
@@ -476,6 +473,20 @@ function initMap() {
         directionsRenderer.setDirections(result);
       }
     });
+  }
+
+  startbutton?.addEventListener("click", () => {
+    // first clear all directions
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    // unbind the directions from the map
+    
+
+    directionsRenderer.setMap(null);
+    directionsRenderer.setPanel(null);
+    const start = new google.maps.LatLng(40.4136, -3.6913);
+    const end = new google.maps.LatLng(40.4136, -3.6929);
+    newRoute(start, end);
     startbutton.style.display = 'none';
     arbutton.style.display = 'block';
   });
