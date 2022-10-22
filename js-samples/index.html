@@ -25,15 +25,15 @@
 
       <div class="text-white font-bold text-xl">
         <div class="text-white flex-row">
-            <h5>
-              <a href="/index.html">
+          <h5>
+            <a href="/index.html">
 
-                <img class="ml-0 h-8 w-8" src="https://www.svgrepo.com/show/137793/safari.svg" alt="logo">
-              </a>
-              XploRA
-                        <span class="ml-4 text-teal-200 font-bold text-sm">Rediscover your world</span>
+              <img class="ml-0 h-8 w-8" src="https://www.svgrepo.com/show/137793/safari.svg" alt="logo">
+            </a>
+            XploRA
+            <span class="ml-4 text-teal-200 font-bold text-sm">Rediscover your world</span>
 
-            </h5>
+          </h5>
         </div>
       </div>
       <div>
@@ -55,14 +55,21 @@
   </nav>
   <div id="map"></div>
 
-  <button id='start-btn' class="floating-prompt  bg-gray-800 text-white cursor-pointer">
+  <div>
+    <button id="start-quiz" class=" floating-prompt bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">
+      Explorar zona
+    </button>
+
+  </div>
+
+  <button id='start-btn' class="hidden floating-prompt  bg-gray-800 text-white cursor-pointer">
     <div class="question transparency-animation">
       <span class="text-2xl">Comienza tu aventura <i>
 
-        <!-- <img class="invert" src="https://www.svgrepo.com/show/304644/time.svg"></img> -->
-      </i>
+          <!-- <img class="invert" src="https://www.svgrepo.com/show/304644/time.svg"></img> -->
+        </i>
         <span class="pull-right text-sm time-estimation"><span>
-        </span>paseo de 12 minutos</span>
+          </span>paseo de 12 minutos</span>
       </span>
   </button>
 
@@ -77,10 +84,9 @@
   </div>
   </div>
 
-  <div class="floating-prompt hidden bg-gray-800 text-white cursor-pointer"
-      id="question-panel">
+  <div class="floating-prompt hidden bg-gray-800 text-white cursor-pointer" id="question-panel">
     <!-- three options, one correct -->
-     <div class="question transparency-animation">
+    <div class="question transparency-animation">
       <div class="text-2xl">¿Cuál es el nombre de esta calle?
         <span class="timer pull-right ml-5 time-estimation"><span>
 
@@ -104,14 +110,15 @@
       </div>
       <div class="curiosities">
         <p class="text-2xl">Sabías que...</p>
-        
+
       </div>
     </div>
+  </div>
+</body>
 
-      
 
 
-    <script id="timer-template" >
+    <script id="timer-template">
       let countdown = 42;
       const timer = document.querySelector('.timer');
       const interval = setInterval(() => {
@@ -129,17 +136,18 @@
       let options = document.querySelectorAll('.option');
       options.forEach(option => {
         option.addEventListener('click', () => {
+          document.querySelector('#start-btn').classList.remove('hidden');
+          console.log('clicked');
           document.querySelector('#question-panel').classList.add('hidden');
-          document.querySelector('#answer-panel').classList.remove('hidden');
         });
       });
     </script>
 
 
 
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrm66rPp3wgWtjxZP-x8ardmhsXtI-gSg&callback=initMap&libraries=places&v=weekly"
-    defer></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrm66rPp3wgWtjxZP-x8ardmhsXtI-gSg&callback=initMap&libraries=places&v=weekly"
+      defer></script>
 </body>
 
 </html>

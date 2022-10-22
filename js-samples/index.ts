@@ -442,6 +442,12 @@ function initMap() {
     }
   }
 
+  const startquiz = document.getElementById("start-quiz");
+  startquiz?.addEventListener("click", () => {
+    let questionpanel = document.getElementById("question-panel");
+    questionpanel?.classList.remove("hidden");
+    startquiz?.classList.add("hidden");
+  });
   const arbutton = document.getElementById("ar-btn");
   const arcontainer = document.getElementById("ar-container");
   const closeArButton = document.getElementById("close-ar-btn");
