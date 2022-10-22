@@ -361,8 +361,10 @@ function initMap() {
         }
       ]
     }
-  );
+    );
 
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
   let service: google.maps.places.PlacesService;
   service = new google.maps.places.PlacesService(map);
   let infowindow: google.maps.InfoWindow;
@@ -467,26 +469,24 @@ function initMap() {
         case error.PERMISSION_DENIED:
           console.error("User denied the request for Geolocation.");
           break;
-        case error.POSITION_UNAVAILABLE:
-          console.error("Location information is unavailable.");
-          break;
-        case error.TIMEOUT:
-          console.error("The request to get user location timed out.");
-          break;
-        default:
-          console.error("An unknown error occurred.");
-      }
-    }
+          case error.POSITION_UNAVAILABLE:
+            console.error("Location information is unavailable.");
+            break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+              default:
+                console.error("An unknown error occurred.");
+              }
+            }
 
-  startbutton?.addEventListener("click", () => {
-    // first clear all directions
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-    // unbind the directions from the map
+            startbutton?.addEventListener("click", () => {
+              // first clear all directions
+              // unbind the directions from the map
 
-    directionsRenderer.setMap(null);
-    directionsRenderer.setPanel(null);
-    let start;
+              directionsRenderer.setMap(null);
+              directionsRenderer.setPanel(null);
+              let start;
     let end;
     if (ubication != undefined && markers[0] != undefined) {
       start = ubication.getPosition();
