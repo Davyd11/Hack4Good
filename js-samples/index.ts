@@ -12,7 +12,7 @@ function initMap() {
     { start: new google.maps.LatLng(40.42450954669476, -3.6886718153422646), end: new google.maps.LatLng(40.4001794, -3.687444) },
 
   ]
-  let current_route = -1;
+  let current_route = -2;
   const map = new google.maps.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -454,6 +454,18 @@ function initMap() {
   startquiz?.addEventListener("click", () => {
     let questionpanel = document.getElementById("question-panel");
     questionpanel?.classList.remove("hidden");
+    const id = 'question' + (current_route + 1);
+    const prev = 'question' + (current_route);
+    const question = document.getElementById(id);
+    const question_prev = document.getElementById(prev);
+
+    if (question_prev != null) {
+      question_prev.classList.add("hidden");
+    }
+    if (question != null) {
+      question.classList.remove("hidden");
+    }
+
     startquiz?.classList.add("hidden");
   });
   
@@ -473,28 +485,57 @@ function initMap() {
   
   const closeArButton = document.getElementById("close-ar-btn");
   const startbutton = document.getElementById("start-btn");
+  const arbutton = document.getElementById("ar-btn");
+  const arcontainer = document.getElementById("ar-container");
   startbutton?.addEventListener("click", () => {
     // first clear all directions
-    const arbutton = document.getElementById("ar-btn");
-    const arcontainer = document.getElementById("ar-container");
   
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(null);
     directionsRenderer.setPanel(null);
-    current_route += 1;
-    if (current_route < routes.length) {
-      newRoute(routes[current_route].start, routes[current_route].end);
-    } else {
-      startbutton?.classList.add("hidden");
-      arcontainer?.classList.remove("hidden");
-      arbutton?.classList.remove("hidden");
-      arbutton?.addEventListener("click", () => {
-        if (arcontainer)
-        arcontainer.style.display = "block";
-      })
+    if (current_route == -2 && !markers[0])
+    {
+        const start = new google.maps.LatLng(40.4136, -3.6913);
+        if (start) {
+          newRoute(start, routes[0].start);
+          current_route += 1;
+    }}
 
+    if (current_route == -2) {
+      if (markers && markers[0].getPosition()) {
+        const start = markers[0].getPosition();
+        if (start) {
+          newRoute(start, routes[0].start);
+          current_route += 1;
+      }
+    }}
+    else {
+      console.log("no start");
+      current_route += 1;
+      if (current_route < routes.length) {
+        newRoute(routes[current_route].start, routes[current_route].end);
+        startquiz?.classList.remove("hidden");
+      } else {
+        startbutton?.classList.add("hidden");
+        arcontainer?.classList.remove("hidden");
+        arbutton?.classList.remove("hidden");
+        arbutton?.addEventListener("click", () => {
+          if (arcontainer)
+          arcontainer.style.display = "block";
+        })
+      }
     }
+    });
+
+    closeArButton?.addEventListener("click", () => {
+      if (arcontainer)
+        arcontainer.style.display = "none";
+      if (arbutton)
+        arbutton.style.display = "none";
+    });
+      //arbutton?.classList.add("hidden");
+      
     // unbind the directions from the map
     
 
@@ -502,13 +543,10 @@ function initMap() {
     
     // startbutton.style.display = 'none';
     // arbutton.style.display = 'block';
-  });
 
   
 
-  closeArButton?.addEventListener("click", () => {
-    arcontainer.style.display = "none";
-  })
+  
   return map;
 }
 

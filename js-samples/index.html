@@ -75,9 +75,11 @@
 
   <button id='ar-btn' class="hidden floating-prompt  bg-gray-800 text-white cursor-pointer">
     <div class="question transparency-animation">
-      <span class="text-2xl">Explora a tu alrededor</span>
+      <span class="text-2xl">
+        <h2>¡Has llegado al Observatorio Nacional!</h2>
+        Explora a tu alrededor</span>
   </button>
-  <div id="ar-container" class="ar-container">
+  <div id="ar-container" class="hidden ar-container">
     <button id="close-ar-btn" class="ar-container-close-button bg-gray-800 ">close</button>
     <iframe src="https://test-hack4good.vercel.app/" width="100%" height="100%">
     </iframe>
@@ -87,19 +89,32 @@
   <div class="floating-prompt hidden bg-gray-800 text-white cursor-pointer" id="question-panel">
     <!-- three options, one correct -->
     <div class="question transparency-animation">
-      <div class="text-2xl">¿Cuál es el nombre de esta calle?
+      <div id="prompt1" class="text-2xl">¿Qué tres tipos de árboles ves?
         <span class="timer pull-right ml-5 time-estimation"><span>
-
       </div>
-      <div class="options">
+      <!-- <div id="prompt2" class="text-2xl">¿Qué altura tiene el mastil de la bandera?
+        <span class="timer pull-right ml-5 time-estimation"><span> -->
+      <div class="options" id="question1">
         <div class="option" id="option1">
-          <span class="text-2xl">Calle de la Princesa</span>
+          <span class="text-2xl">Olivos, cedros y pinos</span>
         </div>
         <div class="option" id="option2">
-          <span class="text-2xl">Calle de la Reina</span>
+          <span class="text-2xl">Lilos, olivos y acacias</span>
         </div>
         <div class="option" id="option3">
-          <span class="text-2xl">Calle de los Encomendadores</span>
+          <span class="text-2xl">Madroños, ficus y acacias</span>
+        </div>
+      </div>
+
+      <div class="options hidden" id="question2">
+        <div class="option" id="option1">
+          <span class="text-2xl">30 m</span>
+        </div>
+        <div class="option" id="option2">
+          <span class="text-2xl">45 m</span>
+        </div>
+        <div class="option" id="option3">
+          <span class="text-2xl">50 m</span>
         </div>
       </div>
     </div>
