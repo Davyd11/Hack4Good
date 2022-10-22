@@ -1,0 +1,109 @@
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+#map {
+  height: 100%;
+}
+
+/* 
+ * Optional: Makes the sample page fill the window. 
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.floating-prompt{
+  /* footer quiz floating banner */
+  position: fixed;
+  bottom: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
+  z-index: 1000;
+  width: 90%;
+  border-radius: 2em;
+  background-color: #fff;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 999;
+
+}
+
+.transparency-animation{
+  animation: transparency 1s infinite;
+}
+
+@keyframes transparency {
+  0% {opacity: 0.8;}
+  50% {opacity: 1;}
+  100% {opacity: 0.8;}
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 1;
+    top: 0px;
+  }
+
+  to {
+    opacity: 0;
+    top: -5px;
+  }
+}
+
+.text-animated-one {
+  display: inline;
+  position: relative;
+  top: 0px;
+  animation: fade-in 1s infinite;
+
+}
+
+.text-animated-two {
+  opacity: 0;
+  display: inline;
+  position: relative;
+  margin-left: -56px;
+  animation: fade-in 1s infinite;
+  animation-delay: 0.5s;
+}
+
+.aggettivi {
+  display: inline;
+  width: 100px;
+  height: 100px;
+}
