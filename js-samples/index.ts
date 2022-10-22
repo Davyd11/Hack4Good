@@ -12,6 +12,7 @@ function initMap() {
     { start: new google.maps.LatLng(40.42450954669476, -3.6886718153422646), end: new google.maps.LatLng(40.4001794, -3.687444) },
 
   ]
+  let current_route = -1;
   const map = new google.maps.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -455,12 +456,7 @@ function initMap() {
     questionpanel?.classList.remove("hidden");
     startquiz?.classList.add("hidden");
   });
-  const arbutton = document.getElementById("ar-btn");
-  const arcontainer = document.getElementById("ar-container");
-  const closeArButton = document.getElementById("close-ar-btn");
-
-  const startbutton = document.getElementById("start-btn");
-
+  
   function newRoute(start: google.maps.LatLng, end: google.maps.LatLng) {
     const request = {
       origin: start,
@@ -474,26 +470,41 @@ function initMap() {
       }
     });
   }
-
+  
+  const closeArButton = document.getElementById("close-ar-btn");
+  const startbutton = document.getElementById("start-btn");
   startbutton?.addEventListener("click", () => {
     // first clear all directions
+    const arbutton = document.getElementById("ar-btn");
+    const arcontainer = document.getElementById("ar-container");
+  
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(null);
+    directionsRenderer.setPanel(null);
+    current_route += 1;
+    if (current_route < routes.length) {
+      newRoute(routes[current_route].start, routes[current_route].end);
+    } else {
+      startbutton?.classList.add("hidden");
+      arcontainer?.classList.remove("hidden");
+      arbutton?.classList.remove("hidden");
+      arbutton?.addEventListener("click", () => {
+        if (arcontainer)
+        arcontainer.style.display = "block";
+      })
+
+    }
     // unbind the directions from the map
     
 
-    directionsRenderer.setMap(null);
-    directionsRenderer.setPanel(null);
-    const start = new google.maps.LatLng(40.4136, -3.6913);
-    const end = new google.maps.LatLng(40.4136, -3.6929);
-    newRoute(start, end);
-    startbutton.style.display = 'none';
-    arbutton.style.display = 'block';
+    // newRoute(routes[0].start, routes[0].end);
+    
+    // startbutton.style.display = 'none';
+    // arbutton.style.display = 'block';
   });
 
-  arbutton?.addEventListener("click", () => {
-    arcontainer.style.display = "block";
-  })
+  
 
   closeArButton?.addEventListener("click", () => {
     arcontainer.style.display = "none";
