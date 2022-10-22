@@ -486,8 +486,15 @@ function initMap() {
 
     directionsRenderer.setMap(null);
     directionsRenderer.setPanel(null);
-    const start = ubication.getPosition();
-    const end = markers[0].getPosition();
+    let start;
+    let end;
+    if (ubication != undefined && markers[0] != undefined) {
+      start = ubication.getPosition();
+      end = markers[0].getPosition();
+    } else {
+      start = new google.maps.LatLng(40.4136, -3.6913);
+      end = new google.maps.LatLng(40.4136, -3.6929);
+    }
     const request = {
       origin: start,
       destination: end,
