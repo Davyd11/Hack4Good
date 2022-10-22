@@ -9,7 +9,7 @@ function initMap() {
   const routes = [
     { start: new google.maps.LatLng(40.425292887624686, -3.688789558920166), end: new google.maps.LatLng(40.424867943894164, -3.689156855568019) },
     { start: new google.maps.LatLng(40.424867943894164, -3.689156855568019), end: new google.maps.LatLng(40.42450954669476, -3.6886718153422646) },
-    { start: new google.maps.LatLng(40.42450954669476, -3.6886718153422646), end: new google.maps.LatLng(40.42424894171441, -3.6913875700730223) },
+    { start: new google.maps.LatLng(40.42450954669476, -3.6886718153422646), end: new google.maps.LatLng(40.4001794, -3.687444) },
 
   ]
   const map = new google.maps.Map(
