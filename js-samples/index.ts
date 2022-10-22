@@ -1,12 +1,4 @@
-/**
- * @license
- * Copyright 2019 Google LLC. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-
-// This example creates a 2-pixel-wide red polyline showing the path of
-// the first trans-Pacific flight between Oakland, CA, and Brisbane,
-// Australia which was made by Charles Kingsford Smith.
+import {watchLocation} from './utils.js'
 
 class Trip {
   constructor(public readonly start: google.maps.LatLng, public readonly end: google.maps.LatLng) {}
@@ -369,51 +361,32 @@ function initMap() {
         }
       ]
     }
-  );
-  
+    );
+
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
   let service: google.maps.places.PlacesService;
   service = new google.maps.places.PlacesService(map);
   let infowindow: google.maps.InfoWindow;
+  let markers: google.maps.Marker[]= [];
+  let ubication: google.maps.Marker;
 
-  const request = {
-    query: "Museum of Contemporary Art Australia",
-    fields: ["name", "geometry"],
-    types: ["museum"],
-  };
+  map.addListener("click", (e) => {
+    deleteMarkers();
+    placeMarkerAndPanTo(e.latLng, map);
+  });
 
-
- 
-  function watchLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(showPosition, handleError);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }
-  function showPosition(position: GeolocationPosition) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    const latlng = new google.maps.LatLng(lat, lng);
+  function addMarker(position: google.maps.LatLng | google.maps.LatLngLiteral) {
     const marker = new google.maps.Marker({
-      position: latlng,
-      map: map,
-      title: "You are here!",
+      position,
+      map,
     });
-    map.setCenter(latlng);
+    markers.push(marker);
   }
-  function handleError(error: GeolocationPositionError) {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        console.error("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.error("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        console.error("The request to get user location timed out.");
-        break;
-      default:
-        console.error("An unknown error occurred.");
+
+  function setMapOnAll(map: google.maps.Map | null) {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
     }
   }
 
@@ -431,9 +404,6 @@ function initMap() {
     map.panTo(latLng);
     return marker;
   }
-
- 
-
 
   const coords = [
     { lat: 40.4136, lng: -3.6913 },
@@ -453,6 +423,7 @@ function initMap() {
     map: map,
     title: "Hello World!",
   });
+  markers.push(marker);
 
   function clear_directions(map: google.maps.Map){
     if (directionsDisplay != null) {
@@ -460,11 +431,8 @@ function initMap() {
       directionsDisplay = null;
     }
   }
-  
+
   const startbutton = document.getElementById("start-btn");
-  const arbutton = document.getElementById("ar-btn");
-  const closeArButton = document.getElementById("close-ar-btn");
-  const arcontainer = document.getElementById("ar-container");
 
   startbutton?.addEventListener("click", () => {
     // first clear all directions
@@ -502,14 +470,11 @@ function initMap() {
   return map;
 }
 
-
-
 declare global {
   interface Window {
     initMap: () => void;
   }
 }
-
 
 window.initMap = initMap;
 
