@@ -13,7 +13,7 @@ class Trip {
 }
 
 
-function initMap(): void {
+function initMap() {
   const map = new google.maps.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -370,6 +370,7 @@ function initMap(): void {
       ]
     }
   );
+  
   let service: google.maps.places.PlacesService;
   service = new google.maps.places.PlacesService(map);
   let infowindow: google.maps.InfoWindow;
@@ -377,37 +378,59 @@ function initMap(): void {
   const request = {
     query: "Museum of Contemporary Art Australia",
     fields: ["name", "geometry"],
+    types: ["museum"],
   };
 
-  service.findPlaceFromQuery(
-    request,
-    (
-      results: google.maps.places.PlaceResult[] | null,
-      status: google.maps.places.PlacesServiceStatus
-    ) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        for (let i = 0; i < results.length; i++) {
-          createMarker(results[i]);
-        }
 
-        map.setCenter(results[0].geometry!.location!);
-      }
+ 
+  function watchLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(showPosition, handleError);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
     }
-  );
+  }
+  function showPosition(position: GeolocationPosition) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const latlng = new google.maps.LatLng(lat, lng);
+    const marker = new google.maps.Marker({
+      position: latlng,
+      map: map,
+      title: "You are here!",
+    });
+    map.setCenter(latlng);
+  }
+  function handleError(error: GeolocationPositionError) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        console.error("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.error("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        console.error("The request to get user location timed out.");
+        break;
+      default:
+        console.error("An unknown error occurred.");
+    }
+  }
 
-  // function createMarker(place: google.maps.places.PlaceResult) {
-  //   if (!place.geometry || !place.geometry.location) return;
+  
 
-  //   const marker = new google.maps.Marker({
-  //     map,
-  //     position: place.geometry.location,
-  //   });
+  map.addListener("click", (e) => {
+    placeMarkerAndPanTo(e.latLng, map);
+  });
 
-  //   google.maps.event.addListener(marker, "click", () => {
-  //     infowindow.setContent(place.name || "");
-  //     infowindow.open(map);
-  //   });
-  // }
+  function placeMarkerAndPanTo(latLng: google.maps.LatLng, map: google.maps.Map) {
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    map.panTo(latLng);
+    return marker;
+  }
 
  
 
@@ -424,18 +447,62 @@ function initMap(): void {
   });
 
   flightPath.setMap(map);
+  watchLocation();
   const marker = new google.maps.Marker({
     position: { lat:40.4136, lng: -3.6929 },
     map: map,
     title: "Hello World!",
   });
 
+  function clear_directions(map: google.maps.Map){
+    if (directionsDisplay != null) {
+      directionsDisplay.setMap(null);
+      directionsDisplay = null;
+    }
+  }
+  
+  const startbutton = document.getElementById("start-btn");
+
+  startbutton?.addEventListener("click", () => {
+    // first clear all directions
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    // unbind the directions from the map
+    
+
+    directionsRenderer.setMap(null);
+    directionsRenderer.setPanel(null);
+    const start = new google.maps.LatLng(40.4136, -3.6913);
+    const end = new google.maps.LatLng(40.4136, -3.6929);
+    const request = {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.WALKING,
+    };
+    directionsRenderer.setMap(map);
+    directionsService.route(request, (result, status) => {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(result);
+      }
+    });
+  });
+  
+  
+
+
+  return map;
 }
+
+
 
 declare global {
   interface Window {
     initMap: () => void;
   }
 }
+
+
 window.initMap = initMap;
+
+
 export {};

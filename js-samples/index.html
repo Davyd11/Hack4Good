@@ -6,62 +6,68 @@
  SPDX-License-Identifier: Apache-2.0
 -->
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <!-- tailwind -->
+
+<head>
+  <meta charset="UTF-8">
+  <!-- tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <title>Hack4Edu - Mad24</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <title>Simple Polylines</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script type="module" src="./index.ts"></script>
+</head>
 
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script type="module" src="./index.ts"></script>
-  </head>
-  <body>
-    <!-- simple empty tailwind navbar -->
-    <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+<body>
+  <!-- simple empty tailwind navbar -->
+  <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+    <div class="container flex flex-wrap justify-between items-center mx-auto">
+
       <div class="text-white font-bold text-xl">
-        <h5 class="text-white">
-          XploRA
-          <span>
+        <div class="text-white flex-row">
+            <h5>
+              <img class="ml-0 h-8 w-8" src="https://www.svgrepo.com/show/137793/safari.svg" alt="logo">
+              XploRA
+                        <span class="ml-4 text-teal-200 font-bold text-sm">Rediscover your world</span>
 
-            <img class="ml-0 h-8 w-8" src="https://www.svgrepo.com/show/137793/safari.svg" alt="logo">
-          </span>
-        </h5>
+            </h5>
+        </div>
       </div>
       <div>
       </div>
       <div class="text-white">
         <!-- logo -->
         <div class="flex items-center">
-          <span class="text-teal-200 font-bold">Rediscover your world</span>
         </div>
       </div>
       <div class="align-end">
         <!-- two rows, showing current points -->
         <div class="grid-rows-2 text-white">
-          <div class="text-right">Level 4</div>
+          <div class="text-right text-sm">Level 4</div>
           <div class="text-right">3042 points</div>
+          <div class="text-right text-sm">Madrid Top 3%</div>
         </div>
       </div>
-    </nav>
-    <div id="map"></div>
-
-      <div class="floating-prompt  bg-gray-800 text-white cursor-pointer">
-        <div class="question transparency-animation">
-          <span class="text-2xl">Comienza tu aventura</span>
-        </div>
     </div>
+  </nav>
+  <div id="map"></div>
 
-    <!--  -->
+  <button id='start-btn' class="floating-prompt  bg-gray-800 text-white cursor-pointer">
+    <div class="question transparency-animation">
+      <span class="text-2xl">Comienza tu aventura <i>
 
-    <!-- 
-     The `defer` attribute causes the callback to execute after the full HTML
-     document has been parsed. For non-blocking uses, avoiding race conditions,
-     and consistent behavior across browsers, consider loading using Promises
-     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrm66rPp3wgWtjxZP-x8ardmhsXtI-gSg&callback=initMap&libraries=places&v=weekly"
-      defer></script>
-  </body>
+        <!-- <img class="invert" src="https://www.svgrepo.com/show/304644/time.svg"></img> -->
+      </i>
+        <span class="pull-right text-sm time-estimation"><span>
+        </span>paseo de 12 minutos</span>
+      </span>
+  </button>
+  </div>
+
+
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrm66rPp3wgWtjxZP-x8ardmhsXtI-gSg&callback=initMap&libraries=places&v=weekly"
+    defer></script>
+</body>
+
 </html>
