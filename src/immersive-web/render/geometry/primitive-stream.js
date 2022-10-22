@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Copyright 2018 The Immersive Web Community Group
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

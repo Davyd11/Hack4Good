@@ -168,14 +168,6 @@ const AugmentedReality = (props: AugmentedRealityProps) => {
         onStopSelected={onStopSelected}
         sessionInProgress={false}
       />
-      {arOn && (
-        <div style={{ zIndex: 99999999, position: "absolute", top: "0" }}>
-          {children && <div>{children}</div>}
-          <div id={overlayElementId}>
-            <button onClick={onStopSelected}>Back</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

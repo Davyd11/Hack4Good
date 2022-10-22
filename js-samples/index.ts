@@ -462,6 +462,9 @@ function initMap() {
   }
   
   const startbutton = document.getElementById("start-btn");
+  const arbutton = document.getElementById("ar-btn");
+  const closeArButton = document.getElementById("close-ar-btn");
+  const arcontainer = document.getElementById("ar-container");
 
   startbutton?.addEventListener("click", () => {
     // first clear all directions
@@ -485,11 +488,17 @@ function initMap() {
         directionsRenderer.setDirections(result);
       }
     });
+    startbutton.style.display = 'none';
+    arbutton.style.display = 'block';
   });
-  
-  
 
+  arbutton?.addEventListener("click", () => {
+    arcontainer.style.display = "block";
+  })
 
+  closeArButton?.addEventListener("click", () => {
+    arcontainer.style.display = "none";
+  })
   return map;
 }
 

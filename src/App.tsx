@@ -13,8 +13,23 @@ const ReasonDisplay = (props: any) => {
 };
 
 const ARStartButton = (props: any) => (
-  <button type="button" onClick={props.onStartSelected}>
-    Start AR session
+  <button
+    type="button"
+    onClick={props.onStartSelected}
+    style={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      fontSize: "30px",
+      borderRadius: "20px",
+      border: "none",
+      backgroundColor: "rgb(31 41 55)",
+      color: "white",
+      padding: "10px 30px",
+    }}
+  >
+    Dive into AR
   </button>
 );
 
