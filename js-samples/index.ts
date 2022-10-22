@@ -480,10 +480,13 @@ function initMap() {
               }
             }
 
-            startbutton?.addEventListener("click", () => {
+            startbutton?.addEventListener("click", (e) => {
               // first clear all directions
               // unbind the directions from the map
-
+              console.log(e);
+              document.getElementById("start-btn")?.classList.add("hidden");
+              let questionpanel = document.getElementById("question-panel");
+              questionpanel?.classList.remove("hidden");
               directionsRenderer.setMap(null);
               directionsRenderer.setPanel(null);
               let start;

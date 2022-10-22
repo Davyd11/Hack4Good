@@ -1,6 +1,6 @@
 import AugmentedRealityView from "./components/AugmentedRealityView";
 import { UnsupportedReason, useAugmentedReality } from "./useAugmentedReality";
-
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 const ReasonDisplay = (props: any) => {
   switch (props.reason) {
     case UnsupportedReason.NotSupportedInBrowser:
@@ -17,6 +17,43 @@ const ARStartButton = (props: any) => (
     Start AR session
   </button>
 );
+
+let map: google.maps.Map;
+
+function initMap(): void {
+  const map = new google.maps.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      zoom: 3,
+      center: {lat: 37.772, lng: -122.214 },
+      mapTypeId: "terrain",
+    }
+  );
+
+  const flightPlanCoordinates = [
+    { lat: 37.772, lng: -122.214 },
+    { lat: 21.291, lng: -157.821 },
+    { lat: -18.142, lng: 178.431 },
+    { lat: -27.467, lng: 153.027 },
+  ];
+  const flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+
+  flightPath.setMap(map);
+}
+
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
+window.initMap = initMap;
+  
 
 export const Default = () => {
   const images = [
@@ -37,12 +74,14 @@ export const Default = () => {
 
 function App() {
   const { support } = useAugmentedReality();
-  return support.isSupported ? (
-    <div>
-      <Default />
-    </div>
-  ) : (
-    <div>Browser not supported</div>
+  return (
+
+    <Wrapper apiKey='AIzaSyCrm66rPp3wgWtjxZP-x8ardmhsXtI-gSg'  render={render}>
+      <div id="map" style={{ width: "100%", height: "100%" }} />
+    </Wrapper>
+
+     
+  
   );
 }
 
