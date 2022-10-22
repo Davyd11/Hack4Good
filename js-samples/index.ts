@@ -375,6 +375,7 @@ function initMap() {
     deleteMarkers();
     placeMarkerAndPanTo(e.latLng, map);
   });
+  
 
   function addMarker(position: google.maps.LatLng | google.maps.LatLngLiteral) {
     const marker = new google.maps.Marker({
@@ -389,7 +390,18 @@ function initMap() {
       markers[i].setMap(map);
     }
   }
-
+  function hideMarkers(): void {
+    setMapOnAll(null);
+  }
+  // Shows any markers currently in the array.
+  function showMarkers(): void {
+    setMapOnAll(map);
+  }
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers(): void {
+    hideMarkers();
+    markers = [];
+  }
   
 
   map.addListener("click", (e) => {
@@ -397,10 +409,8 @@ function initMap() {
   });
 
   function placeMarkerAndPanTo(latLng: google.maps.LatLng, map: google.maps.Map) {
-    const marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
-    });
+    
+    addMarker(latLng);
     map.panTo(latLng);
     return marker;
   }
@@ -431,6 +441,10 @@ function initMap() {
       directionsDisplay = null;
     }
   }
+
+  const arbutton = document.getElementById("ar-btn");
+  const arcontainer = document.getElementById("ar-container");
+  const closeArButton = document.getElementById("close-ar-btn");
 
   const startbutton = document.getElementById("start-btn");
 
