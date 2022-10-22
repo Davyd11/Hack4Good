@@ -484,11 +484,10 @@ function initMap() {
     const directionsRenderer = new google.maps.DirectionsRenderer();
     // unbind the directions from the map
 
-
     directionsRenderer.setMap(null);
     directionsRenderer.setPanel(null);
-    const start = new google.maps.LatLng(40.4136, -3.6913);
-    const end = new google.maps.LatLng(40.4136, -3.6929);
+    const start = ubication.getPosition();
+    const end = markers[0].getPosition();
     const request = {
       origin: start,
       destination: end,
