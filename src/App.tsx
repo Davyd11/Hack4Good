@@ -22,7 +22,7 @@ export const Default = () => {
   const images = [
     {
       key: "1",
-      src: "https://raw.githubusercontent.com/immersive-web/webxr-samples/main/media/gltf/space/space.gltf",
+      src: "/workspaces/Hack4Good-Master/Hack4Good/untitled.gltf",
     },
   ];
   return (
